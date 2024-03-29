@@ -5,7 +5,14 @@ set -e
 echo "REPO: $GITHUB_REPOSITORY"
 echo "ACTOR: $GITHUB_ACTOR"
 
-remote_repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+#remote_repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+echo "Setting Git safe directory (CVE-2022-24765)"
+echo "git config --global --add safe.directory ${GITHUB_WORKSPACE}"
+git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+
+remote_repo=`git remote get-url --push origin`
+echo "remote repository: ${remote_repo}"
+
 remote_branch=${GH_PAGES_BRANCH:=gh-pages}
 
 echo 'Installing 🐍 Python Requirements'
@@ -20,10 +27,6 @@ fi
 
 echo 'Building site 👷 '
 pelican ${PELICAN_CONTENT_FOLDER:=content} -o output -s ${PELICAN_CONFIG_FILE:=publishconf.py}
-
-echo "Setting Git safe directory (CVE-2022-24765)"
-echo "git config --global --add safe.directory ${GITHUB_WORKSPACE}"
-git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
 echo 'Publishing to GitHub Pages 📤 '
 echo 'change into output directory'

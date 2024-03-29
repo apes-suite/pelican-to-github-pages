@@ -13,10 +13,10 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -qy git curl bash
+    && apt-get install --no-install-recommends -qy git curl bash ssh
 
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-RUN apt-get install -y nodejs
+#RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+#RUN apt-get install -y nodejs
 
 COPY entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]
